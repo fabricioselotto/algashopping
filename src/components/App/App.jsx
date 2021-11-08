@@ -7,6 +7,7 @@ import { Container, Wrapper } from './App.styles';
 
 import productsMock from '../../mocks/productsList.json';
 import extractPercentage from '../../utils/extractPercentage';
+import Calculator from '../Calculator';
 
 function App() {
     const colors = ['#62CBC6', '#00ABAD', '#00858C', '#006073', '#004D61']
@@ -109,9 +110,8 @@ function App() {
                                 <div style={{ fontSize: 24 }}>
                                     {totalPrices.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                                 </div>
-
+                                <Calculator />
                             </div>
-
                         </div>
                     }
                 />
