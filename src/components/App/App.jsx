@@ -1,41 +1,31 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Container, Wrapper } from './App.styles';
+
 import LineChart from '../../shared/LineChart';
+
 import AppContainer from '../AppContainer/';
 import ShoppingList from '../ShoppingList';
 import AppHeader from '../AppHeader';
-import { Container, Wrapper } from './App.styles';
-
-import productsMock from '../../mocks/productsList.json';
-import extractPercentage from '../../utils/extractPercentage';
 import Calculator from '../Calculator';
 
+import extractPercentage from '../../utils/extractPercentage';
+
+import { selectAllProducts, selectSelectedProducts, selectSelectedProductTotalPrice } from '../../store/Products/Products.selectors';
+import { toogleProduct } from '../../store/Products/Products.actions';
+
 function App() {
+    const dispatch = useDispatch();
+    
     const colors = ['#62CBC6', '#00ABAD', '#00858C', '#006073', '#004D61']
 
-    const [products, setProducts] = useState(productsMock.products);
-    const [selectedProducts, setSelectedProducts] = useState([]);
-    const [totalPrices, setTotalPrices] = useState(0);
+    const products = useSelector(selectAllProducts)
+    const selectedProducts = useSelector(selectSelectedProducts)
+    const totalPrices = useSelector(selectSelectedProductTotalPrice)
+    
 
-    useEffect(() => {
-        const newSelectedProducts = products
-            .filter(product => product.checked);
-        setSelectedProducts(newSelectedProducts);
-    }, [products]);
-
-    useEffect(() => {
-        const newTotalPrices = selectedProducts
-            .map(product => product.price)
-            .reduce((acc, curr) => acc + curr, 0);
-        setTotalPrices(newTotalPrices);
-    }, [selectedProducts]);
-
-    function handleToggle(id, checked, name) {
-        const newProducts = products.map(product =>
-            product.id === id
-                ? { ...product, checked: !product.checked }
-                : product
-        )
-        setProducts(newProducts);
+    function handleToggle(id) {
+        dispatch(toogleProduct(id));
     }
 
     return (
